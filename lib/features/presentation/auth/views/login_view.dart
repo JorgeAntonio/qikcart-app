@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get.dart';
 
@@ -7,37 +8,24 @@ class LoginPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Controladores para los campos de texto
     final usernameController = useTextEditingController();
     final passwordController = useTextEditingController();
-    final rememberMe = useState(false);
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: edgeInsetsH24,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Logo y título
                 Column(
                   children: [
                     Image.asset(
-                      'assets/logo.png',
+                      'assets/icons/logo.png',
                       height: 80,
-                    ), // Asegúrate de tener el logo en esta ruta
-                    const SizedBox(height: 16),
-                    const Text(
-                      'QikCart',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
                     ),
-                    const SizedBox(height: 8),
+                    gap16,
                     const Text(
                       '''¡Estamos emocionados de tenerte aquí! Empieza a gestionar tus ventas de forma sencilla y efectiva.''',
                       textAlign: TextAlign.center,
@@ -45,8 +33,7 @@ class LoginPage extends HookWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
-                // Campo de usuario
+                gap32,
                 TextField(
                   controller: usernameController,
                   decoration: InputDecoration(
@@ -57,8 +44,7 @@ class LoginPage extends HookWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                // Campo de contraseña
+                gap16,
                 TextField(
                   controller: passwordController,
                   obscureText: true,
@@ -70,55 +56,25 @@ class LoginPage extends HookWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                // Opciones (Recordarme y Olvidé mi contraseña)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: rememberMe.value,
-                          onChanged: (value) {
-                            rememberMe.value = value!;
-                          },
-                        ),
-                        const Text('Recuérdame'),
-                      ],
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        // Acción para recuperar contraseña
-                        Get.snackbar(
-                          'Recuperación',
-                          'Función no implementada aún.',
-                        );
-                      },
-                      child: const Text('¿Olvidaste tu contraseña?'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                // Botón de inicio de sesión
+                gap24,
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Acción para iniciar sesión
                       Get.snackbar(
-                        'Login',
+                        'Inicio de sesión',
                         'Iniciar sesión con ${usernameController.text}',
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: edgeInsetsV16,
                       backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     child: const Text(
-                      'Sign In',
+                      'Iniciar sesión',
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
