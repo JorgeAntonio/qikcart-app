@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
+import 'package:qikcart/core/router/routes.dart';
 
 import '../router/app_router.dart';
 
@@ -21,7 +22,7 @@ class QikCart extends StatelessWidget {
       theme: theme.light(),
       darkTheme: theme.dark(),
       getPages: AppRoutes.pages,
-      initialRoute: AppRoutes.login,
+      initialRoute: Routes.login.name,
       builder: (context, child) {
         return child!;
       },
