@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFormfield extends StatelessWidget {
-  final String? labelText;
-  final String? hintText;
-  final String? helperText;
-  final TextEditingController? controller;
-  final TextInputType? keyboardType;
-  final bool? obscureText;
-  final String? Function(String?)? validator;
-  final Widget? suffixIcon;
-  final AutovalidateMode? autovalidateMode;
-  final FocusNode? focusNode;
   const CustomTextFormfield({
     super.key,
     this.labelText,
@@ -24,6 +14,16 @@ class CustomTextFormfield extends StatelessWidget {
     this.autovalidateMode,
     this.focusNode,
   });
+  final String? labelText;
+  final String? hintText;
+  final String? helperText;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final bool? obscureText;
+  final String? Function(String?)? validator;
+  final Widget? suffixIcon;
+  final AutovalidateMode? autovalidateMode;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
