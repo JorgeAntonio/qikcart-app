@@ -1,19 +1,16 @@
 class LoginResponse {
   final String accessToken;
-  final int userId;
-  final String username;
+  final String ruc;
 
   LoginResponse({
     required this.accessToken,
-    required this.userId,
-    required this.username,
+    required this.ruc,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
       accessToken: json['access'],
-      userId: json['user_id'],
-      username: json['username'],
+      ruc: json['ruc'],
     );
   }
 }

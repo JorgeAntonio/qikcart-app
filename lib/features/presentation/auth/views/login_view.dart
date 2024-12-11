@@ -4,8 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/features/presentation/auth/controllers/login_controller.dart';
 
-class LoginPage extends HookWidget {
-  LoginPage({super.key});
+class LoginView extends HookWidget {
+  LoginView({super.key});
   final LoginController controller = Get.find<LoginController>();
 
   @override
@@ -73,8 +73,14 @@ class LoginPage extends HookWidget {
                               passwordController.text,
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             'Iniciar sesión',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Colors.white,
+                                ),
                           ),
                         ),
                       ),

@@ -342,13 +342,14 @@ class MaterialTheme {
           },
         ),
         filledButtonTheme: FilledButtonThemeData(
-          style: ElevatedButton.styleFrom(
+          style: FilledButton.styleFrom(
             padding: edgeInsetsV16,
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
+            textStyle: textTheme.labelSmall,
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -359,7 +360,7 @@ class MaterialTheme {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            textStyle: textTheme.titleMedium,
+            textStyle: textTheme.labelSmall,
           ),
         ),
       );

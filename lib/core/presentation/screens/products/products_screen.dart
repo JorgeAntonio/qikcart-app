@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:qikcart/features/presentation/products/views/products_view.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
 
   @override
   Widget build(context) {
-    // Access the updated count variable
-    return const Scaffold(body: Center(child: Text("Products Screen")));
+    return ProductsView();
   }
 }

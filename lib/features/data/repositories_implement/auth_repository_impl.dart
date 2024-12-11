@@ -12,7 +12,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<LoginResponse> login(String username, String password) async {
     try {
       final response = await _dio.post(
-        'http://3.94.6.120:8000/api/login/',
+        'http://54.235.246.131:8000/api/login/',
         data: {
           'username': username,
           'password': password,
