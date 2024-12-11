@@ -4,8 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/features/presentation/auth/controllers/login_controller.dart';
 
-class LoginPage extends HookWidget {
-  LoginPage({super.key});
+class LoginView extends HookWidget {
+  LoginView({super.key});
   final LoginController controller = Get.find<LoginController>();
 
   @override
