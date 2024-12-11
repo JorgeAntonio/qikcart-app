@@ -24,7 +24,7 @@ class Routes {
       );
 
   static Routes get profile => const Routes._(
-        name: 'profile',
+        name: '/profile',
         path: '/profile',
       );
 

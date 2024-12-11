@@ -25,6 +25,8 @@ dependencies:
 
   flutter_app_ui:
     path: packages/flutter_app_ui
+  dio: ^5.7.0
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:
