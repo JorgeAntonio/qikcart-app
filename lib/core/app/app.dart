@@ -17,7 +17,7 @@ class QikCart extends StatelessWidget {
     // Usamos GetMaterialApp para integrar GetX.
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'CIP Loreto',
+      title: 'QikaCart',
       themeMode: ThemeMode.light,
       theme: theme.light(),
       darkTheme: theme.dark(),
