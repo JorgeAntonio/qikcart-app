@@ -11,6 +11,7 @@ class ItemController extends GetxController {
   var items = <Item>[].obs;
   var isLoading = false.obs;
   var currentPage = 1.obs;
+  var totalPages = 1.obs;
 
   @override
   void onInit() {
@@ -28,6 +29,15 @@ class ItemController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void calculateTotalPages(int totalItems) {
+    totalPages.value = (totalItems / 10).ceil();
+    Logger().i('Total pages: ${totalPages.value}');
+  }
+
+  void refreshItems() {
+    fetchItems(currentPage.value);
   }
 
   void loadNextPage() {

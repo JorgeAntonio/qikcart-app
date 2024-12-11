@@ -88,15 +88,19 @@ class ProductsView extends StatelessWidget {
                   // Controles de paginación
                   gap16,
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Text(
+                        'Página ${controller.currentPage.value} de ${controller.totalPages.value}',
+                        style: baseTextTheme.bodySmall,
+                      ),
                       FilledButton(
                         onPressed: controller.currentPage.value > 1
                             ? () {
                                 controller.loadPreviousPage();
                               }
                             : null,
-                        child: const Text('Previous'),
+                        child: Icon(Icons.arrow_back_ios, size: 14),
                       ),
                       space8,
                       FilledButton(
@@ -105,7 +109,7 @@ class ProductsView extends StatelessWidget {
                             : () {
                                 controller.loadNextPage();
                               },
-                        child: const Text('Next'),
+                        child: Icon(Icons.arrow_forward_ios, size: 14),
                       ),
                     ],
                   ),
