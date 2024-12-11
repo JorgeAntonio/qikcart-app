@@ -9,4 +9,5 @@ export 'theme/theme.dart';
 export 'typography/typography.dart';
 export 'utils/utils.dart';
 export 'views/homepage_view.dart';
+export 'views/sale_view.dart';
 export 'widgets/widgets.dart';
