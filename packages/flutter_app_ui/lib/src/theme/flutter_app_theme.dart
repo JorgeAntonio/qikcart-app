@@ -359,6 +359,7 @@ class MaterialTheme {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
+            textStyle: textTheme.titleMedium,
           ),
         ),
       );

@@ -68,14 +68,13 @@ class LoginPage extends HookWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.snackbar(
-                              'Inicio de sesión',
-                              'Iniciar sesión con ${usernameController.text}',
+                            controller.login(
+                              usernameController.text,
+                              passwordController.text,
                             );
                           },
                           child: const Text(
                             'Iniciar sesión',
-                            style: TextStyle(fontSize: 16),
                           ),
                         ),
                       ),
