@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
-import 'package:qikcart/core/router/routes.dart';
-
-import '../router/app_router.dart';
+import 'package:qikcart/lib.dart';
 
 class QikCart extends StatelessWidget {
   const QikCart({super.key});
@@ -14,7 +12,6 @@ class QikCart extends StatelessWidget {
 
     MaterialTheme theme = MaterialTheme(textTheme);
 
-    // Usamos GetMaterialApp para integrar GetX.
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'QikaCart',
@@ -22,7 +19,8 @@ class QikCart extends StatelessWidget {
       theme: theme.light(),
       darkTheme: theme.dark(),
       getPages: AppRoutes.pages,
-      initialRoute: Routes.login.name,
+      initialRoute:
+          AuthProvider.isAuthenticated() ? Routes.home.name : Routes.login.name,
       builder: (context, child) {
         return child!;
       },
