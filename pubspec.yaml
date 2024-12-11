@@ -25,13 +25,14 @@ dependencies:
   flutter_app_ui:
     path: packages/flutter_app_ui
 
+  dio: ^5.7.0
+  get_storage: ^2.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^4.0.0
-
-  
+  flutter_lints: ^5.0.0
 
 # The following section is specific to Flutter packages.
 flutter:
