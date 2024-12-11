@@ -13,6 +13,12 @@ class LoginView extends HookWidget {
     final usernameController = useTextEditingController();
     final passwordController = useTextEditingController();
 
+    final isPasswordVisible = useState(false);
+
+    void togglePasswordVisibility() {
+      isPasswordVisible.value = !isPasswordVisible.value;
+    }
+
     return Scaffold(
       body: Obx(
         () {
@@ -54,12 +60,20 @@ class LoginView extends HookWidget {
                       gap16,
                       TextField(
                         controller: passwordController,
-                        obscureText: true,
+                        obscureText: !isPasswordVisible.value,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.lock),
                           hintText: 'Contraseña',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: togglePasswordVisibility,
                           ),
                         ),
                       ),
