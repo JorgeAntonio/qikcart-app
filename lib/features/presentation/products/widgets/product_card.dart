@@ -4,7 +4,7 @@ import 'package:flutter_app_ui/flutter_app_ui.dart';
 class ProductCard extends StatelessWidget {
   final String image;
   final String name;
-  final int price;
+  final double price;
 
   const ProductCard({
     super.key,

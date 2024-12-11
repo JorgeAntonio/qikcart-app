@@ -73,8 +73,14 @@ class LoginView extends HookWidget {
                               passwordController.text,
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             'Iniciar sesión',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Colors.white,
+                                ),
                           ),
                         ),
                       ),
