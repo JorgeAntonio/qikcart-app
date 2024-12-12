@@ -9,4 +9,8 @@ class GetItemsUseCase {
   Future<List<Item>> call(int page) {
     return repository.getItems(page);
   }
+
+  Future<List<Item>> getItemByName(String name) {
+    return repository.getItemByName(name);
+  }
 }

@@ -1,36 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_ui/flutter_app_ui.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:qikcart/core/router/routes.dart';
+import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/item_controller.dart';
 import '../widgets/product_card.dart';
 import 'package:get/get.dart';
 
-class ProductsView extends StatelessWidget {
+class ProductsView extends HookWidget {
   const ProductsView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ItemController controller = Get.find();
+    final cartController = Get.find<CartController>();
+    final searchController = useTextEditingController();
     final baseTextTheme = Theme.of(context).textTheme;
+
+    useEffect(() {
+      searchController.addListener(() {
+        final value = searchController.text;
+        if (value.isNotEmpty) {
+          controller.fetchItemsByName(value);
+        } else {
+          controller.refreshItems();
+        }
+      });
+      return () => searchController.dispose();
+    }, []);
 
     return Scaffold(
       appBar: AppBar(
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(10),
-          ),
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              Icon(Icons.search),
-              SizedBox(width: 8),
-              Text(
-                'Buscar producto',
-                style: Theme.of(context).textTheme.bodyMedium,
+              Expanded(
+                child: TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    labelText: 'Buscar productos',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  searchController.clear();
+                  controller.refreshItems(); // Restaurar la lista completa
+                },
               ),
             ],
           ),
         ),
+        actions: [
+          Obx(
+            () => Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      Get.toNamed(Routes.pos.name);
+                    },
+                  ),
+                  if (cartController.totalItems > 0)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.red,
+                        child: Text(
+                          '${cartController.totalItems}',
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       body: Obx(
         () {
@@ -74,9 +133,7 @@ class ProductsView extends StatelessWidget {
                         itemCount: controller.items.length,
                         itemBuilder: (context, index) {
                           return ProductCard(
-                            image: controller.items[index].nombre,
-                            name: controller.items[index].descripcion,
-                            price: controller.items[index].valorUnitario,
+                            item: controller.items[index],
                           );
                         },
                       );
@@ -100,16 +157,17 @@ class ProductsView extends StatelessWidget {
                                 controller.loadPreviousPage();
                               }
                             : null,
-                        child: Icon(Icons.arrow_back_ios, size: 14),
+                        child: const Icon(Icons.arrow_back_ios, size: 14),
                       ),
                       space8,
                       FilledButton(
-                        onPressed: controller.isLoading.value
-                            ? null
-                            : () {
+                        onPressed: controller.currentPage.value <
+                                controller.totalPages.value
+                            ? () {
                                 controller.loadNextPage();
-                              },
-                        child: Icon(Icons.arrow_forward_ios, size: 14),
+                              }
+                            : null,
+                        child: const Icon(Icons.arrow_forward_ios, size: 14),
                       ),
                     ],
                   ),
