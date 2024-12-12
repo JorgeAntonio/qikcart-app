@@ -22,7 +22,7 @@ class LoginController extends GetxController {
       AuthProvider.saveToken(response.accessToken);
 
       // Log para depuración
-      Logger().i('Usuario autenticado: ${response.username}');
+      Logger().i('Usuario autenticado: ${response.ruc}');
 
       // Redirige al usuario al Home
       Get.offAllNamed(Routes.home.name);

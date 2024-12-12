@@ -4,14 +4,20 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/features/presentation/auth/controllers/login_controller.dart';
 
-class LoginPage extends HookWidget {
-  LoginPage({super.key});
+class LoginView extends HookWidget {
+  LoginView({super.key});
   final LoginController controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
     final usernameController = useTextEditingController();
     final passwordController = useTextEditingController();
+
+    final isPasswordVisible = useState(false);
+
+    void togglePasswordVisibility() {
+      isPasswordVisible.value = !isPasswordVisible.value;
+    }
 
     return Scaffold(
       body: Obx(
@@ -54,12 +60,20 @@ class LoginPage extends HookWidget {
                       gap16,
                       TextField(
                         controller: passwordController,
-                        obscureText: true,
+                        obscureText: !isPasswordVisible.value,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.lock),
                           hintText: 'Contraseña',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: togglePasswordVisibility,
                           ),
                         ),
                       ),
@@ -73,8 +87,14 @@ class LoginPage extends HookWidget {
                               passwordController.text,
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             'Iniciar sesión',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Colors.white,
+                                ),
                           ),
                         ),
                       ),
