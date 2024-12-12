@@ -1,0 +1,38 @@
+import 'package:get/get.dart';
+import 'package:dio/dio.dart';
+import 'package:qikcart/features/data/repositories_implement/auth_repository_impl.dart';
+import 'package:qikcart/features/data/repositories_implement/item_repository_impl.dart';
+import 'package:qikcart/features/domain/repositories/auth_repository.dart';
+import 'package:qikcart/features/domain/repositories/item_repository.dart';
+import 'package:qikcart/features/domain/usecases/get_items_usecase.dart';
+import 'package:qikcart/features/domain/usecases/login_usecase.dart';
+import 'package:qikcart/features/presentation/auth/controllers/login_controller.dart';
+import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
+import 'package:qikcart/features/presentation/products/controllers/item_controller.dart';
+
+class DependencyInjection {
+  static void init() {
+    final dio = Dio();
+
+    // Inyecta AuthRepositoryImpl como AuthRepository
+    Get.put<AuthRepository>(AuthRepositoryImpl(dio));
+
+    // Inyecta LoginUseCase, usando el AuthRepository
+    Get.put(LoginUseCase(Get.find<AuthRepository>()));
+
+    // Inyecta LoginController, usando el LoginUseCase
+    Get.put(LoginController(Get.find<LoginUseCase>()));
+
+    // Inyecta el ItemRepositoryImpl como ItemRepository
+    Get.put<ItemRepository>(ItemRepositoryImpl(dio));
+
+    // Inyecta GetItemsUseCase, usando el ItemRepository
+    Get.put(GetItemsUseCase(Get.find<ItemRepository>()));
+
+    // Inyecta el controlador ItemController
+    Get.put(ItemController(Get.find<GetItemsUseCase>()));
+
+    // Inyecta el controlador CartController
+    Get.put(CartController());
+  }
+}
