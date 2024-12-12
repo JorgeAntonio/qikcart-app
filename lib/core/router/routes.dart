@@ -28,8 +28,13 @@ class Routes {
         path: '/profile',
       );
 
+  static Routes get editprofile => const Routes._(
+        name: '/editprofile',
+        path: '/editprofile',
+      );
+
   static Routes get pos => const Routes._(
-        name: 'pos',
+        name: '/pos',
         path: '/pos',
       );
 

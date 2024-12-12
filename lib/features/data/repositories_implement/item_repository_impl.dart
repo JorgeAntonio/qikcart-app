@@ -24,4 +24,21 @@ class ItemRepositoryImpl implements ItemRepository {
       throw Exception('Error de red: $e');
     }
   }
+
+  @override
+  Future<List<Item>> getItemByName(String name) async {
+    try {
+      final response = await dio.get('http://54.235.246.131:8002/api/items/',
+          queryParameters: {'nombre': name});
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['results'];
+        return data.map((item) => Item.fromJson(item)).toList();
+      } else {
+        throw Exception('Error al buscar el item por nombre');
+      }
+    } catch (e) {
+      throw Exception('Error al buscar el item por nombre: $e');
+    }
+  }
 }
