@@ -31,6 +31,18 @@ class ItemController extends GetxController {
     }
   }
 
+  void fetchItemsByName(String name) async {
+    isLoading.value = true;
+    try {
+      final results = await getItemsUseCase.getItemByName(name);
+      items.assignAll(results);
+    } catch (e) {
+      Logger().e('Error al buscar productos: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   void calculateTotalPages(int totalItems) {
     totalPages.value = (totalItems / 10).ceil();
     Logger().i('Total pages: ${totalPages.value}');

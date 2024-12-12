@@ -34,7 +34,7 @@ class Routes {
       );
 
   static Routes get pos => const Routes._(
-        name: 'pos',
+        name: '/pos',
         path: '/pos',
       );
 
