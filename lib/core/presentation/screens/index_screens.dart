@@ -27,13 +27,8 @@ class _NavigationExampleState extends State<IndexScreens> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
-            label: 'Inicio',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Productos',
+            icon: Icon(Icons.store),
+            label: 'Inventario',
           ),
           NavigationDestination(
             icon: Icon(Icons.add_shopping_cart),
@@ -46,9 +41,8 @@ class _NavigationExampleState extends State<IndexScreens> {
         ],
       ),
       body: <Widget>[
-        HomeScreen(),
         const ProductsScreen(),
-        const PostScreen(),
+        const PosScreen(),
         const ProfileScreen(),
       ][currentPageIndex],
     );

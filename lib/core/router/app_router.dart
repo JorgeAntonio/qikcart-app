@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/core/presentation/screens/login/login_screen.dart';
+import 'package:qikcart/core/presentation/screens/pos/post_screen.dart';
 import 'package:qikcart/lib.dart';
 
 class AppRoutes {
@@ -15,13 +16,17 @@ class AppRoutes {
     GetPage(
       name: Routes.home.name,
       page: () => const IndexScreens(),
-      middlewares: [AuthMiddleware()],
+      // middlewares: [AuthMiddleware()],
       children: [
         GetPage(
           name: Routes.profile.name,
           page: () => const ProfileScreen(),
         ),
       ],
+    ),
+    GetPage(
+      name: Routes.pos.name,
+      page: () => const PosScreen(),
     ),
   ];
 }

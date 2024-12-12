@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_ui/flutter_app_ui.dart';
 
 class MaterialTheme {
   const MaterialTheme(this.textTheme);
@@ -343,7 +342,6 @@ class MaterialTheme {
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
-            padding: edgeInsetsV16,
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
             shape: RoundedRectangleBorder(
@@ -354,7 +352,6 @@ class MaterialTheme {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            padding: edgeInsetsV16,
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
             shape: RoundedRectangleBorder(

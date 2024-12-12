@@ -7,6 +7,7 @@ import 'package:qikcart/features/domain/repositories/item_repository.dart';
 import 'package:qikcart/features/domain/usecases/get_items_usecase.dart';
 import 'package:qikcart/features/domain/usecases/login_usecase.dart';
 import 'package:qikcart/features/presentation/auth/controllers/login_controller.dart';
+import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/item_controller.dart';
 
 class DependencyInjection {
@@ -30,5 +31,8 @@ class DependencyInjection {
 
     // Inyecta el controlador ItemController
     Get.put(ItemController(Get.find<GetItemsUseCase>()));
+
+    // Inyecta el controlador CartController
+    Get.put(CartController());
   }
 }
