@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
+import 'package:qikcart/core/providers/theme_controller.dart';
 import 'package:qikcart/features/data/repositories_implement/auth_repository_impl.dart';
 import 'package:qikcart/features/data/repositories_implement/item_repository_impl.dart';
 import 'package:qikcart/features/domain/repositories/auth_repository.dart';
@@ -34,5 +35,8 @@ class DependencyInjection {
 
     // Inyecta el controlador CartController
     Get.put(CartController());
+
+    // Inyecta el controlador ThemeController
+    Get.put(ThemeController());
   }
 }

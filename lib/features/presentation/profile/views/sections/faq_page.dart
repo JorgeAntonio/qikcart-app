@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui/flutter_app_ui.dart';
 
 class FAQPage extends StatelessWidget {
   final List<Map<String, String>> faqs = [
@@ -29,21 +30,17 @@ class FAQPage extends StatelessWidget {
     },
   ];
 
+  FAQPage({super.key});
+
   @override
   Widget build(BuildContext context) {
+    var textStyle = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.orange),
-          onPressed: () => Navigator.pop(context),
-        ),
         title: Text(
           'FAQ',
-          style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
         ),
-        centerTitle: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -52,9 +49,8 @@ class FAQPage extends StatelessWidget {
           itemBuilder: (context, index) {
             final faq = faqs[index];
             return Card(
-              elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
               margin: EdgeInsets.symmetric(vertical: 8),
               child: Padding(
@@ -64,16 +60,14 @@ class FAQPage extends StatelessWidget {
                   children: [
                     Text(
                       faq['question']!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
+                      style: textStyle.titleSmall!.copyWith(
+                        color: colorScheme.secondary,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    gap8,
                     Text(
                       faq['answer']!,
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
+                      style: textStyle.bodyMedium,
                     ),
                   ],
                 ),
