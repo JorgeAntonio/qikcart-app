@@ -39,6 +39,7 @@ class ProductsView extends HookWidget {
                 child: TextField(
                   controller: searchController,
                   decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(vertical: 0),
                     labelText: 'Buscar productos',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(

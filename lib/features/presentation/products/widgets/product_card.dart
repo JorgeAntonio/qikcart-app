@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/features/domain/entities/item.dart';
 import 'package:qikcart/lib.dart';
@@ -41,6 +42,7 @@ class ProductCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  gap8,
                   Text(
                     item.nombre,
                     style: Theme.of(context).textTheme.labelSmall!.copyWith(
@@ -48,11 +50,13 @@ class ProductCard extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    '\$${item.valorUnitario}',
+                    's/. ${item.valorUnitario}',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontWeight: FontWeight.bold,
                         ),
                   ),
+                  gap8,
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
@@ -60,15 +64,38 @@ class ProductCard extends StatelessWidget {
                         cartController.addItemToCart(item);
                         Get.snackbar(
                           item.nombre,
-                          'Agregado al carrito',
+                          'Producto agregado al carrito',
                           snackPosition: SnackPosition.TOP,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          titleText: Text(
+                            item.nombre,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                          messageText: Text(
+                            'Agregado al carrito exitosamente',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                          duration: const Duration(seconds: 1),
                           onTap: (snack) {
                             Get.toNamed(Routes.pos.name);
                           },
                         );
                       },
                       child: const Text(
-                        'Agregar al carrito',
+                        'Comprar',
                         textAlign: TextAlign.center,
                       ),
                     ),

@@ -27,7 +27,7 @@ class PosView extends HookWidget {
                   gap16,
                   FilledButton.icon(
                     onPressed: () {
-                      Get.to(IndexScreens());
+                      Get.offAll(IndexScreens());
                     },
                     label: Text(
                       'Agregar Productos',

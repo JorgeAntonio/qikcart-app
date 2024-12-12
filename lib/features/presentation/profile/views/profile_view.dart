@@ -75,11 +75,11 @@ class ProfilePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Jorginho',
+                            'Tara',
                             style: textTheme.titleMedium,
                           ),
                           Text(
-                            'jorginho20@gmail.com',
+                            'tara20@gmail.com',
                             style: textTheme.labelSmall,
                           ),
                         ],
