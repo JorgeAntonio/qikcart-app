@@ -23,14 +23,14 @@ class PosView extends HookWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('No products in cart yet'),
+                  Text('Aun no hay productos en el carrito'),
                   gap16,
                   FilledButton.icon(
                     onPressed: () {
-                      Get.toNamed(Routes.home.name);
+                      Get.to(IndexScreens());
                     },
                     label: Text(
-                      'Add products',
+                      'Agregar Productos',
                       style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             color: Colors.white,
                           ),
