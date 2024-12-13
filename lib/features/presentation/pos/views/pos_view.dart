@@ -106,7 +106,7 @@ class PosView extends HookWidget {
                 Column(
                   children: [
                     ListTile(
-                      title: Text('Select Customer (optional)'),
+                      title: Text('Seleccionar Cliente'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () async {
                         final selectedClient =
