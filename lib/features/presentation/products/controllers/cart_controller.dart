@@ -1,26 +1,25 @@
 import 'package:get/get.dart';
 import 'package:qikcart/features/domain/entities/cart_item.dart';
+import 'package:qikcart/features/domain/entities/client.dart';
 import 'package:qikcart/features/domain/entities/item.dart';
 
 class CartController extends GetxController {
   var cartItems = <CartItem>[].obs;
+  var selectedClient = Rxn<Client>(); // Cliente seleccionado (puede ser null)
 
   void addItemToCart(Item item) {
-    // Verifica si el producto ya está en el carrito
     final existingItem =
         cartItems.firstWhereOrNull((i) => i.item.id == item.id);
     if (existingItem != null) {
-      // Si ya está en el carrito, incrementa la cantidad
       existingItem.cantidad.value++;
     } else {
-      // Si no está, agrégalo con cantidad 1
       cartItems.add(CartItem(item: item));
     }
   }
 
   void incrementItem(CartItem cartItem) {
     cartItem.cantidad.value++;
-    update(); // Fuerza la actualización de la UI
+    update();
   }
 
   void decrementItem(CartItem cartItem) {
@@ -29,7 +28,7 @@ class CartController extends GetxController {
     } else {
       removeItemFromCart(cartItem);
     }
-    update(); // Fuerza la actualización de la UI
+    update();
   }
 
   void removeItemFromCart(CartItem cartItem) {
@@ -39,7 +38,6 @@ class CartController extends GetxController {
   int get totalItems =>
       cartItems.fold(0, (sum, cartItem) => sum + cartItem.cantidad.value);
 
-  // Método para calcular el subtotal
   double get subtotal {
     return cartItems.fold(
         0,
@@ -48,12 +46,10 @@ class CartController extends GetxController {
             (cartItem.item.valorUnitario * cartItem.cantidad.value).toInt());
   }
 
-  // Método para calcular los impuestos (suponiendo 0% de impuestos en este ejemplo)
   double get tax {
-    return subtotal * 0.0; // Puedes actualizar el porcentaje si es necesario
+    return subtotal * 0.0;
   }
 
-  // Método para calcular el total
   double get total {
     return subtotal + tax;
   }

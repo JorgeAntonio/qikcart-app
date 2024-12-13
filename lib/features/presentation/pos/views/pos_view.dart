@@ -3,6 +3,8 @@ import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/core/core.dart';
+import 'package:qikcart/features/domain/entities/client.dart';
+import 'package:qikcart/features/presentation/clients/controllers/client_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 
 class PosView extends HookWidget {
@@ -11,6 +13,14 @@ class PosView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = Get.find<CartController>();
+
+    Future<Client?> showCustomerSelector(BuildContext context) {
+      return showModalBottomSheet<Client>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => CustomerSelector(),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -98,8 +108,24 @@ class PosView extends HookWidget {
                     ListTile(
                       title: Text('Select Customer (optional)'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                      onTap: () {},
+                      onTap: () async {
+                        final selectedClient =
+                            await showCustomerSelector(context);
+                        if (selectedClient != null) {
+                          cartController.selectedClient.value = selectedClient;
+                        }
+                      },
                     ),
+                    Obx(() {
+                      final client = cartController.selectedClient.value;
+                      return client != null
+                          ? ListTile(
+                              title: Text('Cliente: ${client.nombreComercial}'),
+                              subtitle:
+                                  Text('Documento: ${client.numeroDocumento}'),
+                            )
+                          : SizedBox.shrink();
+                    }),
                     Divider(),
                   ],
                 ),
@@ -154,6 +180,78 @@ class PosView extends HookWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class CustomerSelector extends HookWidget {
+  const CustomerSelector({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final clientController = Get.find<ClientController>();
+    // clientController.loadClients(numeroDocumento: '72960319');
+    final searchController = useTextEditingController();
+    final isLoading = useState(false);
+
+    // Asegúrate de cargar los clientes al inicio (esto podría hacerse en el initState o un hook)
+    useEffect(() {
+      clientController.loadClients();
+      return null;
+    }, []);
+
+    Future<void> fetchClients(String query) async {
+      isLoading.value = true;
+      try {
+        clientController.clients.value =
+            await clientController.getFilteredClients(query);
+      } catch (e) {
+        Get.snackbar('Error', 'No se pudieron cargar los clientes');
+      } finally {
+        isLoading.value = false;
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: searchController,
+            decoration: InputDecoration(
+              labelText: 'Buscar Cliente',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  fetchClients(searchController.text);
+                },
+              ),
+            ),
+          ),
+          gap16,
+          isLoading.value
+              ? CircularProgressIndicator()
+              : Expanded(
+                  child: Obx(() {
+                    return ListView.builder(
+                      itemCount: clientController.clients.length,
+                      itemBuilder: (context, index) {
+                        final client = clientController.clients[index];
+                        return ListTile(
+                          title: Text(client.nombreComercial),
+                          subtitle: Text(client.numeroDocumento),
+                          onTap: () {
+                            // Devuelve el cliente seleccionado
+                            Navigator.pop(context, client);
+                          },
+                        );
+                      },
+                    );
+                  }),
+                ),
+        ],
       ),
     );
   }
