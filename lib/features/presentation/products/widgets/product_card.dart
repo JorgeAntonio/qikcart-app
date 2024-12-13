@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import '../controllers/cart_controller.dart';
-import 'package:qikcart/features/domain/entities/item.dart'; // Asegúrate de que esta clase esté correctamente definida
+import 'package:qikcart/features/domain/entities/item.dart';
+import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 
 class ProductCard extends StatelessWidget {
   final Item item;
