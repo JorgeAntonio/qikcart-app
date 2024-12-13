@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:qikcart/core/core.dart';
 import 'package:qikcart/features/domain/entities/client.dart';
 import 'package:qikcart/features/presentation/clients/controllers/client_controller.dart';
+import 'package:qikcart/features/presentation/pos/controllers/pos_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 
 class PosView extends HookWidget {
@@ -13,6 +14,7 @@ class PosView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = Get.find<CartController>();
+    final posController = Get.find<PosController>();
 
     Future<Client?> showCustomerSelector(BuildContext context) {
       return showModalBottomSheet<Client>(
@@ -163,6 +165,48 @@ class PosView extends HookWidget {
                         ],
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      // Datos del comprobante
+                      final comprobanteData = {
+                        "serie": "F002",
+                        "numeroComprobante": "001001",
+                        "emisor": 1,
+                        "adquiriente": 2,
+                        "tipoComprobante": "03",
+                        "tipoOperacion": "0101",
+                        "tipoPago": 1,
+                        "codigoMoneda": 1,
+                      };
+
+                      // Datos de la factura
+                      final invoiceData = {
+                        "emisor": 1,
+                        "comprador": 2,
+                        "items": cartController.cartItems.map((item) {
+                          return {
+                            "id": item.item.id,
+                            "quantity": item.cantidad.value
+                          };
+                        }).toList(),
+                        "payTerms": [
+                          {"metodo": "contado"}
+                        ],
+                        "observaciones": "Factura generada desde el carrito",
+                        "tipoPago": 3,
+                        "tipo_pdf": "A4",
+                      };
+
+                      await posController.facturarCarrito(
+                        comprobanteData: comprobanteData,
+                        invoiceData: invoiceData,
+                      );
+                    },
+                    child: Text('Generar Factura'),
                   ),
                 ),
                 SizedBox(

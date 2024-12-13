@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:qikcart/core/providers/theme_controller.dart';
 import 'package:qikcart/features/data/repositories_implement/auth_repository_impl.dart';
 import 'package:qikcart/features/data/repositories_implement/client_repository_impl.dart';
+import 'package:qikcart/features/data/repositories_implement/invoice_service.dart';
 import 'package:qikcart/features/data/repositories_implement/item_repository_impl.dart';
 import 'package:qikcart/features/domain/repositories/auth_repository.dart';
 import 'package:qikcart/features/domain/repositories/client_repository.dart';
@@ -12,6 +13,7 @@ import 'package:qikcart/features/domain/usecases/get_items_usecase.dart';
 import 'package:qikcart/features/domain/usecases/login_usecase.dart';
 import 'package:qikcart/features/presentation/auth/controllers/login_controller.dart';
 import 'package:qikcart/features/presentation/clients/controllers/client_controller.dart';
+import 'package:qikcart/features/presentation/pos/controllers/pos_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/item_controller.dart';
 
@@ -47,5 +49,10 @@ class DependencyInjection {
     Get.put<ClientRepository>(ClientRepositoryImpl(dio));
     Get.put(ClientUsecase(Get.find<ClientRepository>()));
     Get.put(ClientController(Get.find<ClientUsecase>()));
+
+    // Inyecta el controlador PosController
+    Get.put(PosController(
+      InvoiceService(dio),
+    ));
   }
 }
