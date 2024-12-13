@@ -191,13 +191,11 @@ class CustomerSelector extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final clientController = Get.find<ClientController>();
-    // clientController.loadClients(numeroDocumento: '72960319');
     final searchController = useTextEditingController();
     final isLoading = useState(false);
 
-    // Asegúrate de cargar los clientes al inicio (esto podría hacerse en el initState o un hook)
     useEffect(() {
-      clientController.loadClients();
+      clientController.loadClients(nombreComercial: '', numeroDocumento: '');
       return null;
     }, []);
 
@@ -218,15 +216,37 @@ class CustomerSelector extends HookWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text('Selecciona un cliente para continuar'),
+          gap16,
           TextField(
             controller: searchController,
             decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
               labelText: 'Buscar Cliente',
-              suffixIcon: IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  fetchClients(searchController.text);
-                },
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.clear,
+                      size: 16,
+                    ),
+                    onPressed: () {
+                      searchController.clear();
+                      fetchClients('');
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.search,
+                    ),
+                    onPressed: () {
+                      fetchClients(searchController.text);
+                    },
+                  ),
+                ],
               ),
             ),
           ),
