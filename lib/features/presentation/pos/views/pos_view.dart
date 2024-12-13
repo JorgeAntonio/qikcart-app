@@ -18,7 +18,10 @@ class PosView extends HookWidget {
       return showModalBottomSheet<Client>(
         context: context,
         isScrollControlled: true,
-        builder: (context) => CustomerSelector(),
+        builder: (context) => FractionallySizedBox(
+          heightFactor: 0.8,
+          child: CustomerSelector(),
+        ),
       );
     }
 
