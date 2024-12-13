@@ -7,6 +7,8 @@ import 'secondary/help_page.dart';
 import 'secondary/settings_page.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,

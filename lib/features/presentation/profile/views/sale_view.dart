@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SalesPage extends StatefulWidget {
+  const SalesPage({super.key});
+
   @override
   _SalesPageState createState() => _SalesPageState();
 }

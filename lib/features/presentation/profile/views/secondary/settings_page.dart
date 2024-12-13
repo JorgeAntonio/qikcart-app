@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:qikcart/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }

@@ -29,6 +29,8 @@ class FAQPage extends StatelessWidget {
     },
   ];
 
+  FAQPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
