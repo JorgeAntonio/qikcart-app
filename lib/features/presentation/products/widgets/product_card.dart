@@ -21,47 +21,44 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: Stack(
           children: [
-            // Imagen del producto (fondo)
             Positioned.fill(
               child: Image.network(
-                'https://oechsle.vteximg.com.br/arquivos/ids/16233245-998-998/image-40f60b1b25aa4601b9da6c0035da489a.jpg?v=638304711005030000',
-                fit: BoxFit.fitHeight, // Ajustamos la imagen al tamaño del card
+                'https://picsum.photos/200',
+                fit: BoxFit.fitHeight,
               ),
             ),
-            // Contenedor semitransparente para superposición
             Positioned.fill(
               child: Container(
-                color: Colors.black.withOpacity(0.4), // Fondo semitransparente
+                color: Colors.black.withOpacity(0.1),
               ),
             ),
-            // Contenido superpuesto (texto y botón)
             Positioned(
               bottom: 16,
               left: 16,
               right: 16,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     item.nombre,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white, // Texto en blanco
+                          color: Colors.white,
                         ),
-                    maxLines: 1, // Máximo de una línea
-                    overflow: TextOverflow.ellipsis, // Añade "..." si es largo
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     's/. ${item.valorUnitario.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.white, // Texto en blanco
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
-                    width: double.infinity, // Botón con ancho completo
+                    width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
                         cartController.addItemToCart(item);
@@ -72,12 +69,9 @@ class ProductCard extends StatelessWidget {
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           colorText: Theme.of(context).colorScheme.onPrimary,
+                          duration: const Duration(seconds: 1),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Colors.green.shade400, // Color del botón
-                      ),
                       child: const Text('Comprar'),
                     ),
                   ),
