@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
-import 'package:qikcart/features/domain/entities/item.dart';
-import 'package:qikcart/lib.dart';
 import '../controllers/cart_controller.dart';
+import 'package:qikcart/features/domain/entities/item.dart'; // Asegúrate de que esta clase esté correctamente definida
 
 class ProductCard extends StatelessWidget {
-  final Item item; // Objeto del producto
+  final Item item;
 
-  const ProductCard({
-    super.key,
-    required this.item,
-  });
+  const ProductCard({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -24,42 +19,50 @@ class ProductCard extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: Column(
+        child: Stack(
           children: [
-            Container(
-              height: 130,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: Image.network('https://picsum.photos/200').image,
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(16),
+            // Imagen del producto (fondo)
+            Positioned.fill(
+              child: Image.network(
+                'https://oechsle.vteximg.com.br/arquivos/ids/16233245-998-998/image-40f60b1b25aa4601b9da6c0035da489a.jpg?v=638304711005030000',
+                fit: BoxFit.fitHeight, // Ajustamos la imagen al tamaño del card
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 4, left: 8, right: 8),
+            // Contenedor semitransparente para superposición
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.4), // Fondo semitransparente
+              ),
+            ),
+            // Contenido superpuesto (texto y botón)
+            Positioned(
+              bottom: 16,
+              left: 16,
+              right: 16,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  gap8,
                   Text(
                     item.nombre,
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  Text(
-                    's/. ${item.valorUnitario}',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Texto en blanco
+                        ),
+                    maxLines: 1, // Máximo de una línea
+                    overflow: TextOverflow.ellipsis, // Añade "..." si es largo
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    's/. ${item.valorUnitario.toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.white, // Texto en blanco
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  gap8,
+                  const SizedBox(height: 8),
                   SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
+                    width: double.infinity, // Botón con ancho completo
+                    child: ElevatedButton(
                       onPressed: () {
                         cartController.addItemToCart(item);
                         Get.snackbar(
@@ -68,36 +71,14 @@ class ProductCard extends StatelessWidget {
                           snackPosition: SnackPosition.TOP,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
-                          titleText: Text(
-                            item.nombre,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                          ),
-                          messageText: Text(
-                            'Agregado al carrito exitosamente',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                          ),
-                          duration: const Duration(seconds: 1),
-                          onTap: (snack) {
-                            Get.toNamed(Routes.pos.name);
-                          },
+                          colorText: Theme.of(context).colorScheme.onPrimary,
                         );
                       },
-                      child: const Text(
-                        'Comprar',
-                        textAlign: TextAlign.center,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.green.shade400, // Color del botón
                       ),
+                      child: const Text('Comprar'),
                     ),
                   ),
                 ],
