@@ -34,7 +34,32 @@ class _NavigationExampleState extends State<IndexScreens> {
             label: 'Inventario',
           ),
           NavigationDestination(
-            // icon: Icon(Icons.add_shopping_cart),
+            selectedIcon: Obx(() => Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Icon(
+                      Icons.add_shopping_cart,
+                      color: cartController.totalItems > 0
+                          ? theme.onPrimary
+                          : theme.onSurface,
+                    ),
+                    if (cartController.totalItems > 0)
+                      Positioned(
+                        left: 8,
+                        right: 0,
+                        top: 0,
+                        child: CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.red,
+                          child: Text(
+                            '${cartController.totalItems}',
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                  ],
+                )),
             icon: Obx(() => Stack(
                   alignment: Alignment.center,
                   children: [
