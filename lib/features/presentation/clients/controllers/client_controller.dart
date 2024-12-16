@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:qikcart/features/domain/entities/client.dart';
+import 'package:qikcart/features/domain/entities/create_client.dart';
 import 'package:qikcart/features/domain/usecases/client_usecase.dart';
 
 class ClientController extends GetxController {
@@ -37,5 +38,15 @@ class ClientController extends GetxController {
     return clients
         .where((client) => client.nombreComercial.contains(query))
         .toList();
+  }
+
+  // Método para agregar un cliente a la lista
+  Future<void> addClient(CreateClient client) async {
+    try {
+      final newClient = await fetchClients.createClient(client);
+      clients.add(newClient);
+    } catch (e) {
+      Logger().e('Error al agregar cliente: $e');
+    }
   }
 }
