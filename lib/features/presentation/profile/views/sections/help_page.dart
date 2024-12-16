@@ -23,11 +23,7 @@ class HelpPage extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
-<<<<<<< HEAD:lib/features/presentation/profile/views/secondary/help_page.dart
-              child: const Padding(
-=======
               child: Padding(
->>>>>>> c9d098cf1deed910f166482a851e595049dfe079:lib/features/presentation/profile/views/sections/help_page.dart
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
