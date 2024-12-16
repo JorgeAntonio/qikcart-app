@@ -42,16 +42,16 @@ dev_dependencies:
   # flutter_native_splash-development.yaml
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/icons/logo2.png
-  branding: assets/icons/logo2.png
+  image: assets/icons/newlogo.png
+  branding: assets/icons/newlogo.png
   color_dark: "#121212"
-  image_dark: assets/icons/logo2.png
-  branding_dark: assets/icons/logo2.png
+  image_dark: assets/icons/newlogo.png
+  branding_dark: assets/icons/newlogo.png
 
   android_12:
-    image: assets/icons/logo.png
+    image: assets/icons/newlogo.png
     icon_background_color: "#ffffff"
-    image_dark: assets/icons/logo.png
+    image_dark: assets/icons/newlogo.png
     icon_background_color_dark: "#121212"
 
   web: false
