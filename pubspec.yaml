@@ -27,12 +27,54 @@ dependencies:
 
   dio: ^5.7.0
   get_storage: ^2.1.1
+  intl: ^0.19.0
+  pdf: ^3.11.1
+  printing: ^5.13.4
+  flutter_native_splash: ^2.4.3
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.2
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^5.0.0
+
+  # flutter_native_splash-development.yaml
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/icons/newlogo.png
+  branding: assets/icons/newlogo.png
+  color_dark: "#121212"
+  image_dark: assets/icons/newlogo.png
+  branding_dark: assets/icons/newlogo.png
+
+  android_12:
+    image: assets/icons/newlogo.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/icons/newlogo.png
+    icon_background_color_dark: "#121212"
+
+  web: false
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icons/logo.png"
+  web:
+    generate: true
+    image_path: "assets/icons/logo.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  windows:
+    generate: true
+    image_path: "assets/icons/logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icons/logo.png"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -40,7 +82,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  #   - assets/images/
+    #   - assets/images/
     - assets/icons/
   #   - assets/data/
 

@@ -37,4 +37,19 @@ class Client {
       codigoPais: json['codigoPais'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'numeroDocumento': numeroDocumento,
+      'razonSocial': razonSocial,
+      'nombreComercial': nombreComercial,
+      'celular': celular,
+      'direccion': direccion,
+      'imagen': imagen,
+      'tipoDocumento': tipoDocumento,
+      'ubigeo': ubigeo,
+      'codigoPais': codigoPais,
+    };
+  }
 }

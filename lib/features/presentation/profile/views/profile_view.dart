@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/core/core.dart';
-import 'sections/edit_profile.dart';
+import 'package:qikcart/core/presentation/screens/login/login_screen.dart';
 import 'sections/faq_page.dart';
 import 'sections/help_page.dart';
 import 'sections/settings_page.dart';
@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
               ),
               onPressed: () {
                 AuthProvider.logout();
-                Get.toNamed(Routes.login.name);
+                Get.offAll(LoginScreen());
               },
             ),
           ],
@@ -84,15 +84,6 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: colorTheme.tertiary,
-                      ),
-                      onPressed: () {
-                        Get.to(EditProfilePage());
-                      },
                     ),
                   ],
                 ),

@@ -14,7 +14,7 @@ class ProductCard extends StatelessWidget {
     final CartController cartController = Get.find();
 
     return Card(
-      elevation: 5,
+      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -23,16 +23,13 @@ class ProductCard extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-              child: Image.network(
-                'https://picsum.photos/200',
-                fit: BoxFit.fitHeight,
+              child: Image.asset(
+                'assets/icons/recuerdo.png',
+                fit: BoxFit.fitWidth,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
               ),
             ),
-            Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(0.2),
-              ),
-            ),
+            // Positioned.fill(child: Image.asset('assets/icons/recuerdo.png')),
             Positioned(
               bottom: 16,
               left: 16,
@@ -44,7 +41,7 @@ class ProductCard extends StatelessWidget {
                     item.nombre,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          // color: Theme.of(context).colorScheme.primary,
                         ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -54,7 +51,7 @@ class ProductCard extends StatelessWidget {
                     's/. ${item.valorUnitario.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                   ),
                   gap8,

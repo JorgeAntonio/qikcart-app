@@ -66,25 +66,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
             ),
-            gap16,
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: SwitchListTile(
-                title: Text(
-                  'Sincronización automática',
-                  style: textStyle.bodyMedium,
-                ),
-                value: isAutoSyncEnabled,
-                activeColor: colorScheme.secondary,
-                onChanged: (value) {
-                  setState(() {
-                    isAutoSyncEnabled = value;
-                  });
-                },
-              ),
-            ),
           ],
         ),
       ),
@@ -109,24 +90,24 @@ class _SettingsPageState extends State<SettingsPage> {
                   Navigator.pop(context);
                 },
               ),
-              ListTile(
-                title: Text('Inglés'),
-                onTap: () {
-                  setState(() {
-                    selectedLanguage = 'Inglés';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Portugués'),
-                onTap: () {
-                  setState(() {
-                    selectedLanguage = 'Portugués';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
+              // ListTile(
+              //   title: Text('Inglés'),
+              //   onTap: () {
+              //     setState(() {
+              //       selectedLanguage = 'Inglés';
+              //     });
+              //     Navigator.pop(context);
+              //   },
+              // ),
+              // ListTile(
+              //   title: Text('Portugués'),
+              //   onTap: () {
+              //     setState(() {
+              //       selectedLanguage = 'Portugués';
+              //     });
+              //     Navigator.pop(context);
+              //   },
+              // ),
             ],
           ),
         );

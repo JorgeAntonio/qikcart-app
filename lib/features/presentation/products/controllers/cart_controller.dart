@@ -53,4 +53,8 @@ class CartController extends GetxController {
   double get total {
     return subtotal + tax;
   }
+
+  void clearCart() {
+    cartItems.clear();
+  }
 }

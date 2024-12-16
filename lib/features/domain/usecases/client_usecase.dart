@@ -1,4 +1,5 @@
 import 'package:qikcart/features/domain/entities/client.dart';
+import 'package:qikcart/features/domain/entities/create_client.dart';
 import 'package:qikcart/features/domain/repositories/client_repository.dart';
 
 class ClientUsecase {
@@ -18,5 +19,9 @@ class ClientUsecase {
       razonSocial: razonSocial,
       nombreComercial: nombreComercial,
     );
+  }
+
+  Future<Client> createClient(CreateClient client) async {
+    return await repository.createClient(client);
   }
 }
