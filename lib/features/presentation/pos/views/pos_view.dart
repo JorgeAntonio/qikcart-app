@@ -8,6 +8,7 @@ import 'package:qikcart/core/core.dart';
 import 'package:qikcart/features/domain/entities/client.dart';
 import 'package:qikcart/features/domain/entities/comprobante.dart';
 import 'package:qikcart/features/presentation/clients/controllers/client_controller.dart';
+import 'package:qikcart/features/presentation/clients/views/create_client.dart';
 // import 'package:qikcart/features/presentation/pos/controllers/pos_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -86,6 +87,7 @@ class PosView extends HookWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
                     itemCount: cartController.cartItems.length,
                     itemBuilder: (context, index) {
                       final cartItem = cartController.cartItems[index];
@@ -134,7 +136,13 @@ class PosView extends HookWidget {
                 Column(
                   children: [
                     ListTile(
-                      title: Text('Seleccionar Cliente'),
+                      title: Text(
+                        'Seleccionar cliente',
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () async {
                         final selectedClient =
@@ -199,14 +207,21 @@ class PosView extends HookWidget {
                       final cartController = Get.find<CartController>();
 
                       if (cartController.cartItems.isEmpty) {
-                        Get.snackbar('Error',
-                            'El carrito está vacío. Agrega productos antes de pagar.');
+                        Get.snackbar(
+                          'Error',
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          'El carrito está vacío. Agrega productos antes de pagar.',
+                        );
                         return;
                       }
 
                       if (cartController.selectedClient.value == null) {
-                        Get.snackbar('Error',
-                            'Selecciona un cliente antes de continuar.');
+                        Get.snackbar(
+                          'Error',
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          colorText: Theme.of(context).colorScheme.onError,
+                          'Selecciona un cliente antes de continuar.',
+                        );
                         return;
                       }
 
@@ -221,7 +236,7 @@ class PosView extends HookWidget {
                             content: Row(
                               children: [
                                 CircularProgressIndicator(),
-                                SizedBox(width: 16),
+                                space16,
                                 Text('Esperando...'),
                               ],
                             ),
@@ -342,6 +357,12 @@ class CustomerSelector extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text('Selecciona un cliente para continuar'),
+          TextButton(
+            onPressed: () {
+              Get.to(CreateClientPage());
+            },
+            child: Text('Crear Cliente'),
+          ),
           gap16,
           TextField(
             controller: searchController,
@@ -589,6 +610,7 @@ class BoletaDialog extends StatelessWidget {
               ? SizedBox(
                   height: 200, // Adjust the height as needed
                   child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: cartController.cartItems.map((cartItem) {

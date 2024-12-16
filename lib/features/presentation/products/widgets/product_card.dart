@@ -23,16 +23,13 @@ class ProductCard extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-                child: Icon(
-             Icons.shopping_cart,
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              size: 150,
-            )),
-            Positioned.fill(
-              child: Container(
-                  // color: Colors.black.withOpacity(0.0),
-                  ),
+              child: Image.asset(
+                'assets/icons/recuerdo.png',
+                fit: BoxFit.fitWidth,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              ),
             ),
+            // Positioned.fill(child: Image.asset('assets/icons/recuerdo.png')),
             Positioned(
               bottom: 16,
               left: 16,
@@ -44,6 +41,7 @@ class ProductCard extends StatelessWidget {
                     item.nombre,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
+                          // color: Theme.of(context).colorScheme.primary,
                         ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

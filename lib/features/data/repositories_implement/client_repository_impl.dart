@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:qikcart/features/domain/entities/client.dart';
+import 'package:qikcart/features/domain/entities/create_client.dart';
 import 'package:qikcart/features/domain/repositories/client_repository.dart';
 
 class ClientRepositoryImpl implements ClientRepository {
@@ -34,6 +36,27 @@ class ClientRepositoryImpl implements ClientRepository {
         throw Exception('Error al obtener los clientes');
       }
     } catch (e) {
+      throw Exception('Error de red: $e');
+    }
+  }
+
+  @override
+  Future<Client> createClient(CreateClient createClient) async {
+    try {
+      final response = await dio.post(
+        'http://54.235.246.131:8001/api/entidades',
+        data: createClient.toJson(),
+      );
+
+      Logger().i('Response: ${response.data}');
+
+      if (response.statusCode == 201) {
+        return Client.fromJson(response.data);
+      } else {
+        throw Exception('Error al crear el cliente');
+      }
+    } on DioException catch (e) {
+      Logger().e('Error de red: $e');
       throw Exception('Error de red: $e');
     }
   }

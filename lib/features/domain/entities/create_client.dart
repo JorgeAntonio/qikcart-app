@@ -1,17 +1,15 @@
-class Client {
-  final int id;
+class CreateClient {
   final String numeroDocumento;
   final String razonSocial;
   final String nombreComercial;
-  final String celular;
   final String direccion;
-  final String imagen;
+  final String? celular;
+  final String? imagen;
   final String tipoDocumento;
   final int ubigeo;
   final int codigoPais;
 
-  Client({
-    required this.id,
+  CreateClient({
     required this.numeroDocumento,
     required this.razonSocial,
     required this.nombreComercial,
@@ -23,24 +21,9 @@ class Client {
     required this.codigoPais,
   });
 
-  factory Client.fromJson(Map<String, dynamic> json) {
-    return Client(
-      id: json['id'],
-      numeroDocumento: int.parse(json['numeroDocumento']).toString(),
-      razonSocial: json['razonSocial'],
-      nombreComercial: json['nombreComercial'],
-      celular: json['celular'],
-      direccion: json['direccion'],
-      imagen: json['imagen'],
-      tipoDocumento: int.parse(json['tipoDocumento']).toString(),
-      ubigeo: json['ubigeo'],
-      codigoPais: json['codigoPais'],
-    );
-  }
-
+  // Convertir la clase CreateClient en un mapa para enviarlo a una API o guardarlo
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'numeroDocumento': numeroDocumento,
       'razonSocial': razonSocial,
       'nombreComercial': nombreComercial,
