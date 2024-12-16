@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 import 'package:qikcart/features/domain/entities/client.dart';
 import 'package:qikcart/features/domain/repositories/client_repository.dart';
 
@@ -27,8 +26,6 @@ class ClientRepositoryImpl implements ClientRepository {
         'http://54.235.246.131:8001/api/entidades',
         queryParameters: queryParameters,
       );
-
-      Logger().d('Response: ${response.data}');
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['results'];

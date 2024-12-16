@@ -1,32 +1,78 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:qikcart/features/data/repositories_implement/invoice_service.dart';
+import 'package:logger/logger.dart';
+import 'package:qikcart/features/domain/entities/comprobante.dart';
+import 'package:qikcart/features/domain/usecases/create_comprobante_usecase.dart';
+import 'package:qikcart/features/domain/usecases/generate_pdf_usecase.dart';
 
-class PosController extends GetxController {
-  final InvoiceService invoiceService;
+class ComprobanteController extends GetxController {
+  final CreateComprobanteUseCase createComprobanteUseCase;
+  final GeneratePDFUseCase generatePDFUseCase;
 
-  PosController(this.invoiceService);
+  ComprobanteController({
+    required this.createComprobanteUseCase,
+    required this.generatePDFUseCase,
+  });
 
-  Future<void> facturarCarrito(
-      {required Map<String, dynamic> comprobanteData,
-      required Map<String, dynamic> invoiceData}) async {
-    // Crear el comprobante
-    final comprobante = await invoiceService.createComprobante(comprobanteData);
+  final Rxn<Comprobante> _comprobante = Rxn<Comprobante>();
+  Comprobante? get comprobante => _comprobante.value;
 
-    if (comprobante == null) {
-      Get.snackbar('Error', 'No se pudo crear el comprobante');
+  final RxBool isLoading = false.obs;
+
+  Future<void> createComprobante(Comprobante comprobanteData) async {
+    isLoading.value = true;
+    try {
+      final result = await createComprobanteUseCase(comprobanteData);
+      _comprobante.value = result;
+      Get.snackbar('Éxito', 'Comprobante generado correctamente');
+    } on DioException catch (e) {
+      Get.snackbar(
+        duration: Duration(
+          seconds: 3,
+        ),
+        'Error',
+        'No se pudo generar el comprobante: $e',
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> generatePDF({
+    required int comprador,
+    required int emisor,
+    required List<Map<String, dynamic>> items,
+    required List<Map<String, String>> payTerms,
+    required String observaciones,
+    required int tipoPago,
+    required String tipoPdf,
+  }) async {
+    if (_comprobante.value == null) {
+      Get.snackbar('Error', 'Primero genera el comprobante');
       return;
     }
 
-    // Agregar el ID del comprobante al cuerpo de la factura
-    invoiceData['comprobante'] = comprobante['id'];
+    final comprobanteid = _comprobante.value!.id;
+    Logger().i(comprobanteid);
 
-    // Generar la factura
-    final factura = await invoiceService.generateInvoice(invoiceData);
-
-    if (factura != null) {
-      Get.snackbar('Éxito', 'Factura generada correctamente');
-    } else {
-      Get.snackbar('Error', 'No se pudo generar la factura');
+    isLoading.value = true;
+    try {
+      await generatePDFUseCase.call(
+        comprobante: comprobanteid!,
+        emisor: emisor,
+        comprador: comprador,
+        items: items,
+        payTerms: payTerms,
+        observaciones: observaciones,
+        tipoPago: tipoPago,
+        tipoPdf: tipoPdf,
+      );
+      Get.snackbar('Éxito', 'PDF generado correctamente');
+    } on DioException catch (e) {
+      Get.snackbar('Error', 'No se pudo generar el PDF: $e');
+      Logger().e(e.response!.data);
+    } finally {
+      isLoading.value = false;
     }
   }
 }
