@@ -68,7 +68,7 @@ class PosView extends HookWidget {
                       Get.offAll(IndexScreens());
                     },
                     label: Text(
-                      'Agregar Productos',
+                      'Continuar Comprando',
                       style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             color: Colors.white,
                           ),

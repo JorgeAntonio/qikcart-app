@@ -14,7 +14,7 @@ class ProductCard extends StatelessWidget {
     final CartController cartController = Get.find();
 
     return Card(
-      elevation: 5,
+      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -23,15 +23,17 @@ class ProductCard extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-              child: Image.network(
-                'https://picsum.photos/200',
-                fit: BoxFit.fitHeight,
-              ),
-            ),
+                child: Icon(
+              Icons.shopping_cart,
+              color: Theme.of(context).colorScheme.primary.withValues(
+                    alpha: 0.1,
+                  ),
+              size: 150,
+            )),
             Positioned.fill(
               child: Container(
-                color: Colors.black.withOpacity(0.2),
-              ),
+                  // color: Colors.black.withOpacity(0.0),
+                  ),
             ),
             Positioned(
               bottom: 16,
@@ -44,7 +46,6 @@ class ProductCard extends StatelessWidget {
                     item.nombre,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -54,7 +55,7 @@ class ProductCard extends StatelessWidget {
                     's/. ${item.valorUnitario.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                   ),
                   gap8,
