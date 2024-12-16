@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // Importa GetX
-import 'package:qikcart/theme_controller.dart';
 import 'core/core.dart';
 import 'core/dependencies/injections.dart';
-// Importa el controlador de tema
 
 Future<void> bootstrap(Environment environment) async {
   final enableLogging = environment.enableLogging;
@@ -15,9 +12,6 @@ Future<void> bootstrap(Environment environment) async {
       WidgetsFlutterBinding.ensureInitialized();
       // Inicializa las dependencias
       DependencyInjection.init();
-
-      // Inicializa el controlador de tema
-      Get.put(ThemeController());
 
       const app = QikCart();
       runApp(app);

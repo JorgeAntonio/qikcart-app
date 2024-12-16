@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:qikcart/features/domain/usecases/login_usecase.dart';
@@ -28,7 +29,12 @@ class LoginController extends GetxController {
       Get.offAllNamed(Routes.home.name);
     } catch (e) {
       errorMessage.value = 'Error: $e';
-      Get.snackbar('Error', 'No se pudo iniciar sesión');
+      Get.snackbar(
+        'Error',
+        'No se pudo iniciar sesión',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }

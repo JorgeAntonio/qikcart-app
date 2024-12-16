@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/core/core.dart';
-import 'secondary/edit_profile.dart';
-import 'secondary/faq_page.dart';
-import 'secondary/help_page.dart';
-import 'secondary/settings_page.dart';
+import 'sections/edit_profile.dart';
+import 'sections/faq_page.dart';
+import 'sections/help_page.dart';
+import 'sections/settings_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   void _showLogoutDialog(BuildContext context) {
+    var colorTheme = Theme.of(context).colorScheme;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -20,16 +23,17 @@ class ProfilePage extends StatelessWidget {
             TextButton(
               child: Text('Cancelar'),
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el cuadro de diálogo
+                Get.back();
               },
             ),
             TextButton(
               child: Text(
                 'Cerrar sesión',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: colorTheme.error),
               ),
               onPressed: () {
-                Get.toNamed(Routes.login.name); // Llama al método de logout
+                AuthProvider.logout();
+                Get.toNamed(Routes.login.name);
               },
             ),
           ],
@@ -40,26 +44,21 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var colorTheme = Theme.of(context).colorScheme;
+    var textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          'Perfil',
-          style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: false,
+        title: const Text('Perfil'),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              // Encabezado del perfil
               Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: colorTheme.primaryContainer.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -70,46 +69,41 @@ class ProfilePage extends StatelessWidget {
                         'https://via.placeholder.com/150',
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    const Expanded(
+                    space12,
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Jorginho',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                            'Tara',
+                            style: textTheme.titleMedium,
                           ),
                           Text(
-                            'jorginho20@gmail.com',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
+                            'tara20@gmail.com',
+                            style: textTheme.labelSmall,
                           ),
                         ],
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.edit, color: Colors.orange),
+                      icon: Icon(
+                        Icons.edit,
+                        color: colorTheme.tertiary,
+                      ),
                       onPressed: () {
                         Get.to(EditProfilePage());
-                        // Acción para editar el perfil
                       },
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 24),
-
-              // Opciones en cards redondeados
+              gap20,
               _buildMenuCard(
                 context,
                 icon: Icons.help_outline,
                 text: 'Ayuda',
                 onTap: () {
                   Get.to(HelpPage());
-                  // Acción para esta opción
                 },
               ),
               _buildMenuCard(
@@ -118,7 +112,6 @@ class ProfilePage extends StatelessWidget {
                 text: 'FAQ',
                 onTap: () {
                   Get.to(FAQPage());
-                  // Acción para esta opción
                 },
               ),
               _buildMenuCard(
@@ -127,17 +120,14 @@ class ProfilePage extends StatelessWidget {
                 text: 'Configuraciones',
                 onTap: () {
                   Get.to(SettingsPage());
-                  // Acción para esta opción
                 },
               ),
               _buildMenuCard(
                 context,
                 icon: Icons.logout,
                 text: 'Cerrar sesión',
-                textColor: Colors.red,
-                iconColor: Colors.red,
                 onTap: () {
-                  _showLogoutDialog(context); // Acción para cerrar sesión
+                  _showLogoutDialog(context);
                 },
               ),
             ],
@@ -150,8 +140,6 @@ class ProfilePage extends StatelessWidget {
   Widget _buildMenuCard(BuildContext context,
       {required IconData icon,
       required String text,
-      Color textColor = Colors.black,
-      Color iconColor = Colors.blue,
       required VoidCallback onTap}) {
     return Card(
       shape: RoundedRectangleBorder(
@@ -159,10 +147,10 @@ class ProfilePage extends StatelessWidget {
       ),
       elevation: 2,
       child: ListTile(
-        leading: Icon(icon, color: iconColor),
+        leading: Icon(icon, color: Theme.of(context).colorScheme.tertiary),
         title: Text(
           text,
-          style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
         onTap: onTap,

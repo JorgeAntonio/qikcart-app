@@ -1,107 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui/flutter_app_ui.dart';
 
 class HelpPage extends StatelessWidget {
   const HelpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var textStyle = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.orange),
-          onPressed: () => Navigator.pop(context),
-        ),
         title: const Text(
           'Ayuda',
-          style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
         ),
-        centerTitle: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // Información de la aplicación
             Card(
-              elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
+<<<<<<< HEAD:lib/features/presentation/profile/views/secondary/help_page.dart
               child: const Padding(
+=======
+              child: Padding(
+>>>>>>> c9d098cf1deed910f166482a851e595049dfe079:lib/features/presentation/profile/views/sections/help_page.dart
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Acerca de QikCart',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
+                      style: textStyle.titleMedium!.copyWith(
+                        color: colorScheme.secondary,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    gap8,
                     Text(
                       '''QikCart es una aplicación de punto de venta diseñada para facilitar la gestión de productos, ventas y transacciones en pequeños y medianos negocios. Es intuitiva, rápida y optimizada para ofrecer la mejor experiencia al usuario.''',
-                      style: TextStyle(fontSize: 16),
+                      style: textStyle.bodyMedium,
                     ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 16),
-
-            // Información de contacto del desarrollador
+            gap16,
             Card(
-              elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Contacto del desarrollador',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
+                      style: textStyle.titleMedium!.copyWith(
+                        color: colorScheme.secondary,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    gap8,
                     Row(
                       children: [
-                        Icon(Icons.person, color: Colors.orange),
-                        SizedBox(width: 8),
-                        Text(
-                          'Jorge Antonio',
-                          style: TextStyle(fontSize: 16),
+                        Icon(
+                          Icons.person,
+                          color: colorScheme.tertiary,
+                          size: 16,
                         ),
+                        space8,
+                        Text('Jorge Antonio', style: textStyle.bodyMedium),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    gap8,
                     Row(
                       children: [
-                        Icon(Icons.email, color: Colors.orange),
-                        SizedBox(width: 8),
+                        Icon(
+                          Icons.email,
+                          color: colorScheme.tertiary,
+                          size: 16,
+                        ),
+                        space8,
                         Text(
                           'jorge.antonio@example.com',
-                          style: TextStyle(fontSize: 16),
+                          style: textStyle.bodyMedium,
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    gap8,
                     Row(
                       children: [
-                        Icon(Icons.phone, color: Colors.orange),
-                        SizedBox(width: 8),
+                        Icon(
+                          Icons.phone,
+                          color: colorScheme.tertiary,
+                          size: 16,
+                        ),
+                        space8,
                         Text(
                           '+51 987 654 321',
-                          style: TextStyle(fontSize: 16),
+                          style: textStyle.bodyMedium,
                         ),
                       ],
                     ),
@@ -109,41 +109,38 @@ class HelpPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
-
-            // Información adicional
+            gap16,
             Card(
-              elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Información de versión',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
+                      style: textStyle.titleMedium!.copyWith(
+                        color: colorScheme.secondary,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    gap8,
                     Text(
                       'Versión: 1.0',
-                      style: TextStyle(fontSize: 16),
+                      style: textStyle.bodyMedium,
                     ),
-                    SizedBox(height: 8),
+                    gap8,
                     Text(
                       'Última Update: Diciembre 2024',
-                      style: TextStyle(fontSize: 16),
+                      style: textStyle.bodyMedium,
                     ),
-                    SizedBox(height: 8),
+                    gap8,
                     Text(
                       'www.qikcart.com',
-                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                      style: textStyle.bodyMedium!.copyWith(
+                        color: colorScheme.primary,
+                      ),
                     ),
                   ],
                 ),
