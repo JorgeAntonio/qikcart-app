@@ -494,6 +494,10 @@ class BoletaDialog extends StatelessWidget {
       await Printing.layoutPdf(onLayout: (PdfPageFormat format) async {
         return pdf.save();
       });
+
+      // Limpiamos el carrito y el cliente seleccionado
+      cartController.clearCart(); // Limpiar carrito
+      cartController.selectedClient.value = null; // Limpiar cliente
     }
 
     // Función para compartir el PDF de la boleta
@@ -555,6 +559,9 @@ class BoletaDialog extends StatelessWidget {
 
       // Compartir el PDF generado
       await Printing.sharePdf(bytes: await pdf.save(), filename: 'boleta.pdf');
+      // Limpiamos el carrito y el cliente seleccionado
+      cartController.clearCart(); // Limpiar carrito
+      cartController.selectedClient.value = null; // Limpiar cliente
     }
 
     //retrieving the comprobante number from Get storage
@@ -641,7 +648,10 @@ class BoletaDialog extends StatelessWidget {
             foregroundColor: Theme.of(context).colorScheme.error,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Get.back();
+            // Limpiamos el carrito y el cliente seleccionado
+            cartController.clearCart(); // Limpiar carrito
+            cartController.selectedClient.value = null; // Limpiar cliente
           },
           child: Text('Cerrar'),
         ),

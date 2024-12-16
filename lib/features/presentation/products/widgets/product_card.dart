@@ -24,10 +24,8 @@ class ProductCard extends StatelessWidget {
           children: [
             Positioned.fill(
                 child: Icon(
-              Icons.shopping_cart,
-              color: Theme.of(context).colorScheme.primary.withValues(
-                    alpha: 0.1,
-                  ),
+             Icons.shopping_cart,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
               size: 150,
             )),
             Positioned.fill(
