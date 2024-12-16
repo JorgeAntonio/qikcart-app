@@ -8,8 +8,6 @@ import 'package:qikcart/core/core.dart';
 import 'package:qikcart/features/domain/entities/client.dart';
 import 'package:qikcart/features/domain/entities/comprobante.dart';
 import 'package:qikcart/features/presentation/clients/controllers/client_controller.dart';
-import 'package:qikcart/features/presentation/clients/views/create_client.dart';
-// import 'package:qikcart/features/presentation/pos/controllers/pos_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
@@ -357,12 +355,12 @@ class CustomerSelector extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text('Selecciona un cliente para continuar'),
-          TextButton(
-            onPressed: () {
-              Get.to(CreateClientPage());
-            },
-            child: Text('Crear Cliente'),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     Get.to(CreateClientPage());
+          //   },
+          //   child: Text('Crear Cliente'),
+          // ),
           gap16,
           TextField(
             controller: searchController,
