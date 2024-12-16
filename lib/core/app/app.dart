@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
 import 'package:qikcart/lib.dart';
-import 'package:qikcart/theme_controller.dart';
-// Importa el controlador del tema
+import 'package:qikcart/core/providers/theme_controller.dart';
 
 class QikCart extends StatelessWidget {
   const QikCart({super.key});

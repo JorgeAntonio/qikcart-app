@@ -1,12 +1,17 @@
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
+import 'package:qikcart/core/providers/theme_controller.dart';
 import 'package:qikcart/features/data/repositories_implement/auth_repository_impl.dart';
+import 'package:qikcart/features/data/repositories_implement/client_repository_impl.dart';
 import 'package:qikcart/features/data/repositories_implement/item_repository_impl.dart';
 import 'package:qikcart/features/domain/repositories/auth_repository.dart';
+import 'package:qikcart/features/domain/repositories/client_repository.dart';
 import 'package:qikcart/features/domain/repositories/item_repository.dart';
+import 'package:qikcart/features/domain/usecases/client_usecase.dart';
 import 'package:qikcart/features/domain/usecases/get_items_usecase.dart';
 import 'package:qikcart/features/domain/usecases/login_usecase.dart';
 import 'package:qikcart/features/presentation/auth/controllers/login_controller.dart';
+import 'package:qikcart/features/presentation/clients/controllers/client_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/item_controller.dart';
 
@@ -34,5 +39,13 @@ class DependencyInjection {
 
     // Inyecta el controlador CartController
     Get.put(CartController());
+
+    // Inyecta el controlador ThemeController
+    Get.put(ThemeController());
+
+    // Inyecta el controlador ClientController
+    Get.put<ClientRepository>(ClientRepositoryImpl(dio));
+    Get.put(ClientUsecase(Get.find<ClientRepository>()));
+    Get.put(ClientController(Get.find<ClientUsecase>()));
   }
 }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
-import 'package:qikcart/theme_controller.dart';
+import 'package:qikcart/core/providers/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SettingsPageState createState() => _SettingsPageState();
 }
 
@@ -16,78 +20,44 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final ThemeController themeController =
         Get.find(); // Obtén el controlador del tema
+    var textStyle = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.orange),
-          onPressed: () => Navigator.pop(context),
-        ),
         title: Text(
           'Configuraciones',
-          style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
         ),
-        centerTitle: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Opción de Modo Oscuro
             Card(
-              elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Obx(() => SwitchListTile(
                     title: Text(
                       'Modo oscuro',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: textStyle.bodyMedium,
                     ),
                     value: themeController.isDarkMode.value,
-                    activeColor: Colors.orange,
+                    activeColor: colorScheme.secondary,
                     onChanged: (value) {
                       themeController.toggleTheme(value);
                     },
                   )),
             ),
-            SizedBox(height: 16),
-
-            // Opción de Notificaciones
+            gap16,
             Card(
-              elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: SwitchListTile(
-                title: Text(
-                  'Notificaciones',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                value: isNotificationsEnabled,
-                activeColor: Colors.orange,
-                onChanged: (value) {
-                  setState(() {
-                    isNotificationsEnabled = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 16),
-
-            // Opción de Idioma Preferido
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: ListTile(
                 title: Text(
                   'Idioma preferido',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: textStyle.bodyMedium,
                 ),
                 subtitle: Text(selectedLanguage),
                 trailing: Icon(Icons.arrow_forward_ios, size: 16),
@@ -96,21 +66,18 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
             ),
-            SizedBox(height: 16),
-
-            // Opción de Sincronización Automática
+            gap16,
             Card(
-              elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: SwitchListTile(
                 title: Text(
                   'Sincronización automática',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: textStyle.bodyMedium,
                 ),
                 value: isAutoSyncEnabled,
-                activeColor: Colors.orange,
+                activeColor: colorScheme.secondary,
                 onChanged: (value) {
                   setState(() {
                     isAutoSyncEnabled = value;
@@ -124,7 +91,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  // Diálogo para seleccionar idioma
   void _showLanguageDialog() {
     showDialog(
       context: context,
