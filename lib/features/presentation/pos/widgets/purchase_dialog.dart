@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:qikcart/features/domain/entities/comprobante.dart';
 import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -18,204 +17,372 @@ class BoletaDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = Get.find<CartController>();
-    DateTime now = DateTime.now();
 
-    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    // Datos del Voucher
 
-    // Datos ficticios de la empresa
-    const String empresaNombre = "Mi Empresa S.A.C.";
-    const String empresaRUC = "20512345678";
-    const String empresaDireccion = "Av. Principal 123, Lima, Perú";
-    const String logoUrl =
-        "https://via.placeholder.com/150"; // Reemplaza con tu URL de logo
+    final comprobanteNumber = GetStorage().read('comprobanteNumber');
+    final comprobanteNumberTopadLeft =
+        comprobanteNumber.toString().padLeft(8, '0');
+    final comprobanteSerie = comprobante.serie;
+    final comprobanteFechaEmision = comprobante.fechaEmision;
 
-    // Generar qr
-    final qrCode = QrImageView(
-      data: '1234567890',
-      version: QrVersions.auto,
-      size: 200.0,
-    );
+    // Datos de tienda
+    final storeName = 'Mi Tienda';
+    final storeAddress = 'Calle Nauta 123';
+    final storePhone = '123456789';
+    final storeRuc = '1072960321';
 
-    // Función para generar el PDF de la boleta
+    // Función para generar el QR como Uint8List
+    Future<Uint8List> generateQR(String data) async {
+      final qrPainter = QrPainter(
+        data: data,
+        version: QrVersions.auto,
+        gapless: false,
+      );
+
+      final picData = await qrPainter.toImageData(200.0); // Tamaño del QR
+      final buffer = picData!.buffer.asUint8List();
+      return buffer;
+    }
+
     Future<void> generateBoletaPDF() async {
       final pdf = pw.Document();
 
-      pdf.addPage(pw.Page(
-        build: (pw.Context context) {
-          return pw.Column(
-            children: [
-              // Encabezado con Logo y detalles de la empresa
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Image(
-                    pw.MemoryImage(NetworkAssetBundle(Uri.parse(logoUrl))
-                        .load(logoUrl)
-                        .then(
-                          (value) => value.buffer.asUint8List(),
-                        )
-                        .asStream()
-                        .first as Uint8List),
-                    width: 80,
-                    height: 80,
-                  ),
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.end,
+      // Generar QR con el dato deseado
+      final Uint8List qrCodeData = await generateQR(
+          'Boleta de Venta\nSerie: $comprobanteSerie\nNúmero: $comprobanteNumberTopadLeft\nFecha de emisión: $comprobanteFechaEmision\nCliente: ${cartController.selectedClient.value?.nombreComercial ?? 'Sin Cliente'}\nTotal: s/. ${cartController.total.toStringAsFixed(2)}');
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(32),
+          build: (pw.Context context) {
+            return pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                // Encabezado de la tienda
+                pw.Center(
+                  child: pw.Column(
                     children: [
-                      pw.Text(empresaNombre,
+                      pw.Text(storeName,
                           style: pw.TextStyle(
-                              fontSize: 16, fontWeight: pw.FontWeight.bold)),
-                      pw.Text("RUC: $empresaRUC"),
-                      pw.Text(empresaDireccion),
-                      pw.Text("Fecha: $formattedDate"),
-                      pw.Text("Comprobante: ${comprobante.serie}"),
+                              fontSize: 24, fontWeight: pw.FontWeight.bold)),
+                      pw.SizedBox(height: 4),
+                      pw.Text(storeAddress, style: pw.TextStyle(fontSize: 12)),
+                      pw.Text('Teléfono: $storePhone',
+                          style: pw.TextStyle(fontSize: 12)),
+                      pw.Text('RUC: $storeRuc',
+                          style: pw.TextStyle(fontSize: 12)),
                     ],
                   ),
-                ],
-              ),
-              pw.SizedBox(height: 16),
-              pw.Text('Boleta de Pago',
-                  style: pw.TextStyle(
-                      fontSize: 24, fontWeight: pw.FontWeight.bold)),
-              pw.Text('Fecha: $formattedDate'),
-              pw.SizedBox(height: 16),
-              pw.Text(
-                  'Cliente: ${cartController.selectedClient.value?.nombreComercial ?? 'Sin Cliente'}'),
-              pw.SizedBox(height: 16),
-              pw.Divider(),
-              ...cartController.cartItems.map((cartItem) {
-                return pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text(cartItem.item.nombre),
-                    pw.Text('x${cartItem.cantidad.value}'),
-                    pw.Text(
-                        's/. ${cartItem.item.valorUnitario.toStringAsFixed(2)}'),
-                  ],
-                );
-              }),
-              pw.Divider(),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Subtotal:'),
-                  pw.Text('s/. ${cartController.subtotal.toStringAsFixed(2)}'),
-                ],
-              ),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Tax (0%)'),
-                  pw.Text('s/. ${cartController.tax.toStringAsFixed(2)}'),
-                ],
-              ),
-              pw.Divider(),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Total'),
-                  pw.Text('s/. ${cartController.total.toStringAsFixed(2)}',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                ],
-              ),
-              // Código QR
-              pw.Center(
-                child: pw.BarcodeWidget(
-                  barcode: pw.Barcode.qrCode(),
-                  data: 'Comprobante: ${comprobante.serie}\n'
-                      'Total: s/. ${cartController.total.toStringAsFixed(2)}\n'
-                      'Fecha: $formattedDate\n'
-                      'Cliente: ${cartController.selectedClient.value?.nombreComercial ?? 'Consumidor Final'}',
-                  width: 100,
-                  height: 100,
                 ),
-              ),
-              pw.SizedBox(height: 8),
-              pw.Center(
-                  child: pw.Text("Escanea el código QR para más detalles")),
-            ],
-          );
-        },
-      ));
+                pw.Divider(thickness: 1, height: 20),
+
+                // Información del comprobante
+                pw.SizedBox(height: 8),
+                pw.Text('Boleta de Venta',
+                    style: pw.TextStyle(
+                        fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 4),
+                pw.Text('Serie: $comprobanteSerie'),
+                pw.Text('Número: $comprobanteNumberTopadLeft'),
+                pw.Text('Fecha de emisión: $comprobanteFechaEmision'),
+                pw.SizedBox(height: 8),
+
+                // Información del cliente
+                pw.Text(
+                    'Cliente: ${cartController.selectedClient.value?.nombreComercial ?? 'Sin Cliente'}',
+                    style: pw.TextStyle(fontSize: 12)),
+                pw.Divider(thickness: 1, height: 20),
+
+                // Tabla de productos
+                pw.Table(
+                  border: pw.TableBorder.all(width: 0.5),
+                  columnWidths: {
+                    0: pw.FlexColumnWidth(4),
+                    1: pw.FlexColumnWidth(1),
+                    2: pw.FlexColumnWidth(2),
+                  },
+                  children: [
+                    // Encabezados
+                    pw.TableRow(
+                      decoration:
+                          const pw.BoxDecoration(color: PdfColors.grey300),
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Descripción',
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 12)),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Cant.',
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 12)),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Precio',
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 12)),
+                        ),
+                      ],
+                    ),
+                    // Filas de productos
+                    ...cartController.cartItems.map((cartItem) {
+                      return pw.TableRow(children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(cartItem.item.nombre),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('${cartItem.cantidad.value}'),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(
+                              's/. ${cartItem.item.valorUnitario.toStringAsFixed(2)}'),
+                        ),
+                      ]);
+                    }),
+                  ],
+                ),
+                pw.SizedBox(height: 8),
+
+                // Totales
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.end,
+                  children: [
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text(
+                            'Subtotal: s/. ${cartController.subtotal.toStringAsFixed(2)}'),
+                        pw.Text(
+                            'Tax (0%): s/. ${cartController.tax.toStringAsFixed(2)}'),
+                        pw.SizedBox(height: 4),
+                        pw.Text(
+                            'Total: s/. ${cartController.total.toStringAsFixed(2)}',
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold, fontSize: 14)),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.Divider(thickness: 1, height: 20),
+
+                // Mensaje final y QR
+                pw.Center(
+                  child: pw.Column(
+                    children: [
+                      pw.Text(
+                          'Bienes transferidos en la amazonía región selva para ser consumidos en la misma.\nNo se aceptan devoluciones ni cambios de productos.\nGracias por su compra.',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(fontSize: 10)),
+                      pw.SizedBox(height: 16),
+                      pw.Image(pw.MemoryImage(qrCodeData),
+                          width: 100, height: 100),
+                      pw.SizedBox(height: 8),
+                      pw.Text('Escanea el código QR para más información',
+                          style: pw.TextStyle(fontSize: 10)),
+                      pw.SizedBox(height: 16),
+                      pw.Text(
+                          'Por favor, conserve su boleta de venta para cualquier reclamo o devolución.',
+                          style: pw.TextStyle(fontSize: 10),
+                          textAlign: pw.TextAlign.center),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      );
 
       // Mostrar el PDF generado
       await Printing.layoutPdf(onLayout: (PdfPageFormat format) async {
         return pdf.save();
       });
 
-      // Limpiamos el carrito y el cliente seleccionado
-      cartController.clearCart(); // Limpiar carrito
-      cartController.selectedClient.value = null; // Limpiar cliente
+      // Limpiar carrito y cliente seleccionado
+      cartController.clearCart();
+      cartController.selectedClient.value = null;
     }
 
-    // Función para compartir el PDF de la boleta
     Future<void> shareBoletaPDF() async {
       final pdf = pw.Document();
 
-      pdf.addPage(pw.Page(
-        build: (pw.Context context) {
-          return pw.Column(
-            children: [
-              pw.Text('Boleta de Pago',
-                  style: pw.TextStyle(
-                      fontSize: 24, fontWeight: pw.FontWeight.bold)),
-              pw.Text('Fecha: $formattedDate'),
-              pw.SizedBox(height: 16),
-              pw.Text(
-                  'Cliente: ${cartController.selectedClient.value?.nombreComercial ?? 'Sin Cliente'}'),
-              pw.SizedBox(height: 16),
-              pw.Divider(),
-              ...cartController.cartItems.map((cartItem) {
-                return pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+      // Generar QR con el dato deseado
+      final Uint8List qrCodeData = await generateQR(
+          'Boleta de Venta\nSerie: $comprobanteSerie\nNúmero: $comprobanteNumberTopadLeft\nFecha de emisión: $comprobanteFechaEmision\nCliente: ${cartController.selectedClient.value?.nombreComercial ?? 'Sin Cliente'}\nTotal: s/. ${cartController.total.toStringAsFixed(2)}');
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(32),
+          build: (pw.Context context) {
+            return pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                // Encabezado de la tienda
+                pw.Center(
+                  child: pw.Column(
+                    children: [
+                      pw.Text(storeName,
+                          style: pw.TextStyle(
+                              fontSize: 24, fontWeight: pw.FontWeight.bold)),
+                      pw.SizedBox(height: 4),
+                      pw.Text(storeAddress, style: pw.TextStyle(fontSize: 12)),
+                      pw.Text('Teléfono: $storePhone',
+                          style: pw.TextStyle(fontSize: 12)),
+                      pw.Text('RUC: $storeRuc',
+                          style: pw.TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                ),
+                pw.Divider(thickness: 1, height: 20),
+
+                // Información del comprobante
+                pw.SizedBox(height: 8),
+                pw.Text('Boleta de Venta',
+                    style: pw.TextStyle(
+                        fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 4),
+                pw.Text('Serie: $comprobanteSerie'),
+                pw.Text('Número: $comprobanteNumberTopadLeft'),
+                pw.Text('Fecha de emisión: $comprobanteFechaEmision'),
+                pw.SizedBox(height: 8),
+
+                // Información del cliente
+                pw.Text(
+                    'Cliente: ${cartController.selectedClient.value?.nombreComercial ?? 'Sin Cliente'}',
+                    style: pw.TextStyle(fontSize: 12)),
+                pw.Divider(thickness: 1, height: 20),
+
+                // Tabla de productos
+                pw.Table(
+                  border: pw.TableBorder.all(width: 0.5),
+                  columnWidths: {
+                    0: pw.FlexColumnWidth(4),
+                    1: pw.FlexColumnWidth(1),
+                    2: pw.FlexColumnWidth(2),
+                  },
                   children: [
-                    pw.Text(cartItem.item.nombre),
-                    pw.Text('x${cartItem.cantidad.value}'),
-                    pw.Text(
-                        's/. ${cartItem.item.valorUnitario.toStringAsFixed(2)}'),
+                    // Encabezados
+                    pw.TableRow(
+                      decoration:
+                          const pw.BoxDecoration(color: PdfColors.grey300),
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Descripción',
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 12)),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Cant.',
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 12)),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Precio',
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 12)),
+                        ),
+                      ],
+                    ),
+                    // Filas de productos
+                    ...cartController.cartItems.map((cartItem) {
+                      return pw.TableRow(children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(cartItem.item.nombre),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('${cartItem.cantidad.value}'),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(
+                              's/. ${cartItem.item.valorUnitario.toStringAsFixed(2)}'),
+                        ),
+                      ]);
+                    }),
                   ],
-                );
-              }),
-              pw.Divider(),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Subtotal:'),
-                  pw.Text('s/. ${cartController.subtotal.toStringAsFixed(2)}'),
-                ],
-              ),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Tax (0%)'),
-                  pw.Text('s/. ${cartController.tax.toStringAsFixed(2)}'),
-                ],
-              ),
-              pw.Divider(),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Total'),
-                  pw.Text('s/. ${cartController.total.toStringAsFixed(2)}',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                ],
-              ),
-            ],
-          );
-        },
-      ));
+                ),
+                pw.SizedBox(height: 8),
 
-      // Compartir el PDF generado
-      await Printing.sharePdf(bytes: await pdf.save(), filename: 'boleta.pdf');
-      // Limpiamos el carrito y el cliente seleccionado
-      cartController.clearCart(); // Limpiar carrito
-      cartController.selectedClient.value = null; // Limpiar cliente
+                // Totales
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.end,
+                  children: [
+                    pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text(
+                            'Subtotal: s/. ${cartController.subtotal.toStringAsFixed(2)}'),
+                        pw.Text(
+                            'Tax (0%): s/. ${cartController.tax.toStringAsFixed(2)}'),
+                        pw.SizedBox(height: 4),
+                        pw.Text(
+                            'Total: s/. ${cartController.total.toStringAsFixed(2)}',
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold, fontSize: 14)),
+                      ],
+                    ),
+                  ],
+                ),
+                pw.Divider(thickness: 1, height: 20),
+
+                // Mensaje final y QR
+                pw.Center(
+                  child: pw.Column(
+                    children: [
+                      pw.Text(
+                          'Bienes transferidos en la amazonía región selva para ser consumidos en la misma.\nNo se aceptan devoluciones ni cambios de productos.\nGracias por su compra.',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(fontSize: 10)),
+                      pw.SizedBox(height: 16),
+                      pw.Image(pw.MemoryImage(qrCodeData),
+                          width: 100, height: 100),
+                      pw.SizedBox(height: 8),
+                      pw.Text('Escanea el código QR para más información',
+                          style: pw.TextStyle(fontSize: 10)),
+                      pw.SizedBox(height: 16),
+                      pw.Text(
+                          'Por favor, conserve su boleta de venta para cualquier reclamo o devolución.',
+                          style: pw.TextStyle(fontSize: 10),
+                          textAlign: pw.TextAlign.center),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      );
+
+      // Guardar el PDF en memoria
+      final pdfData = await pdf.save();
+
+      // Compartir el PDF
+      await Printing.sharePdf(bytes: pdfData, filename: 'boleta.pdf');
+
+      // Limpiar carrito y cliente seleccionado
+      cartController.clearCart();
+      cartController.selectedClient.value = null;
     }
-
-    //retrieving the comprobante number from Get storage
-    final comprobanteNumber = GetStorage().read('comprobanteNumber');
-    final comprobanteNumberTopadLeft =
-        comprobanteNumber.toString().padLeft(8, '0');
 
     return AlertDialog(
       title: Text('Boleta de Pago'),
@@ -231,11 +398,9 @@ class BoletaDialog extends StatelessWidget {
           Text('Total: s/. ${cartController.total.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.titleMedium),
           Divider(),
-
-          // Items del carrito
           cartController.cartItems.isNotEmpty
               ? SizedBox(
-                  height: 200, // Adjust the height as needed
+                  height: 200,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: Column(
@@ -261,8 +426,6 @@ class BoletaDialog extends StatelessWidget {
                   ),
                 )
               : SizedBox.shrink(),
-
-          // Aquí puedes agregar más detalles del comprobante
           Divider(),
           Text('¿Deseas imprimir la boleta?'),
         ],
@@ -273,8 +436,6 @@ class BoletaDialog extends StatelessWidget {
             foregroundColor: Theme.of(context).colorScheme.primary,
           ),
           onPressed: () async {
-            // Aquí generamos el PDF
-            // Puedes incluir la lógica para generar el PDF aquí
             await generateBoletaPDF();
             Get.back();
           },
@@ -285,8 +446,6 @@ class BoletaDialog extends StatelessWidget {
             foregroundColor: Theme.of(context).colorScheme.secondary,
           ),
           onPressed: () async {
-            // Aquí compartimos el PDF
-            // Puedes incluir la lógica para compartir el PDF aquí
             await shareBoletaPDF();
             Get.back();
           },
@@ -298,9 +457,8 @@ class BoletaDialog extends StatelessWidget {
           ),
           onPressed: () {
             Get.back();
-            // Limpiamos el carrito y el cliente seleccionado
-            cartController.clearCart(); // Limpiar carrito
-            cartController.selectedClient.value = null; // Limpiar cliente
+            cartController.clearCart();
+            cartController.selectedClient.value = null;
           },
           child: Text('Cerrar'),
         ),
