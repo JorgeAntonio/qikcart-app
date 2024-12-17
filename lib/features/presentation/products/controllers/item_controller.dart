@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:qikcart/features/domain/entities/item_create.dart';
 import 'package:qikcart/features/domain/usecases/get_items_usecase.dart';
 import 'package:qikcart/features/domain/entities/item.dart';
 
@@ -61,6 +62,18 @@ class ItemController extends GetxController {
     if (currentPage.value > 1) {
       currentPage.value--;
       fetchItems(currentPage.value);
+    }
+  }
+
+  Future<void> addItem(ItemCreate item) async {
+    isLoading.value = true;
+    try {
+      await getItemsUseCase.createItem(item);
+      fetchItems(currentPage.value);
+    } catch (e) {
+      Logger().e('Error al agregar item: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_ui/flutter_app_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-// import 'package:qikcart/core/router/routes.dart';
-// import 'package:qikcart/features/presentation/products/controllers/cart_controller.dart';
 import 'package:qikcart/features/presentation/products/controllers/item_controller.dart';
+import 'package:qikcart/features/presentation/products/views/new_product.dart';
 import '../widgets/product_card.dart';
 import 'package:get/get.dart';
 
@@ -53,44 +52,20 @@ class ProductsView extends HookWidget {
                 icon: const Icon(Icons.clear),
                 onPressed: () {
                   searchController.clear();
-                  controller.refreshItems(); // Restaurar la lista completa
+                  controller.refreshItems();
                 },
               ),
             ],
           ),
         ),
-        // actions: [
-        //   Obx(
-        //     () => Padding(
-        //       padding: const EdgeInsets.only(right: 16),
-        //       child: Stack(
-        //         alignment: Alignment.center,
-        //         children: [
-        //           IconButton(
-        //             icon: const Icon(Icons.shopping_cart),
-        //             onPressed: () {
-        //               Get.toNamed(Routes.pos.name);
-        //             },
-        //           ),
-        //           if (cartController.totalItems > 0)
-        //             Positioned(
-        //               right: 8,
-        //               top: 8,
-        //               child: CircleAvatar(
-        //                 radius: 10,
-        //                 backgroundColor: Colors.red,
-        //                 child: Text(
-        //                   '${cartController.totalItems}',
-        //                   style: const TextStyle(
-        //                       fontSize: 12, color: Colors.white),
-        //                 ),
-        //               ),
-        //             ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // ],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Get.to(() => const NewProductView());
+            },
+          ),
+        ],
       ),
       body: Obx(
         () {
