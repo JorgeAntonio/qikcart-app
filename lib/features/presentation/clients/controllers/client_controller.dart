@@ -42,11 +42,14 @@ class ClientController extends GetxController {
 
   // Método para agregar un cliente a la lista
   Future<void> addClient(CreateClient client) async {
+    isLoading.value = true;
     try {
       final newClient = await fetchClients.createClient(client);
       clients.add(newClient);
     } catch (e) {
       Logger().e('Error al agregar cliente: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

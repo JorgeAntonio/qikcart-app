@@ -5,7 +5,7 @@ class CreateClient {
   final String direccion;
   final String? celular;
   final String? imagen;
-  final String tipoDocumento;
+  final int tipoDocumento;
   final int ubigeo;
   final int codigoPais;
 

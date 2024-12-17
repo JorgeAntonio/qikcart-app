@@ -68,7 +68,7 @@ class HelpPage extends StatelessWidget {
                           size: 16,
                         ),
                         space8,
-                        Text('Jorge Antonio', style: textStyle.bodyMedium),
+                        Text('Edinson Montalvan', style: textStyle.bodyMedium),
                       ],
                     ),
                     gap8,
@@ -81,7 +81,7 @@ class HelpPage extends StatelessWidget {
                         ),
                         space8,
                         Text(
-                          'jorge.antonio@example.com',
+                          'edinson.montalvan@gmail.com',
                           style: textStyle.bodyMedium,
                         ),
                       ],

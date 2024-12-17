@@ -75,11 +75,11 @@ class ProfilePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Tara',
+                            'mayna_medina',
                             style: textTheme.titleMedium,
                           ),
                           Text(
-                            'tara20@gmail.com',
+                            'mayra.medina@gmail.com',
                             style: textTheme.labelSmall,
                           ),
                         ],
@@ -94,7 +94,7 @@ class ProfilePage extends StatelessWidget {
                 icon: Icons.help_outline,
                 text: 'Ayuda',
                 onTap: () {
-                  Get.to(HelpPage());
+                  Get.to(() => HelpPage());
                 },
               ),
               _buildMenuCard(
@@ -102,7 +102,7 @@ class ProfilePage extends StatelessWidget {
                 icon: Icons.question_answer,
                 text: 'FAQ',
                 onTap: () {
-                  Get.to(FAQPage());
+                  Get.to(() => FAQPage());
                 },
               ),
               _buildMenuCard(
@@ -110,7 +110,7 @@ class ProfilePage extends StatelessWidget {
                 icon: Icons.settings,
                 text: 'Configuraciones',
                 onTap: () {
-                  Get.to(SettingsPage());
+                  Get.to(() => SettingsPage());
                 },
               ),
               _buildMenuCard(

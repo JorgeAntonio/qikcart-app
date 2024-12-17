@@ -360,6 +360,10 @@ class MaterialTheme {
             textStyle: textTheme.labelSmall,
           ),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          labelStyle: const TextStyle(fontSize: 14),
+        ),
       );
 
   List<ExtendedColor> get extendedColors => [];

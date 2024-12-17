@@ -26,7 +26,7 @@ class LoginController extends GetxController {
       Logger().i('Usuario autenticado: ${response.ruc}');
 
       // Redirige al usuario al Home
-      Get.offAllNamed(Routes.home.name);
+      Get.offAll(() => IndexScreens());
     } catch (e) {
       errorMessage.value = 'Error: $e';
       Get.snackbar(

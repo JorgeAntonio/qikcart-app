@@ -44,7 +44,7 @@ class ClientRepositoryImpl implements ClientRepository {
   Future<Client> createClient(CreateClient createClient) async {
     try {
       final response = await dio.post(
-        'http://54.235.246.131:8001/api/entidades',
+        'http://54.235.246.131:8001/api/entidades/',
         data: createClient.toJson(),
       );
 
